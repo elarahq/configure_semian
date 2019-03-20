@@ -1,0 +1,27 @@
+PATH
+  remote: .
+  specs:
+    housing_semian (0.1.0)
+      deep_dup
+      semian
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    deep_dup (0.0.3)
+    rake (10.5.0)
+    semian (0.8.8)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler (~> 1.16)
+  housing_semian!
+  rake (~> 10.0)
+
+RUBY VERSION
+   ruby 2.4.1p111
+
+BUNDLED WITH
+   1.16.1

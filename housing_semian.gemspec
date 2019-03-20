@@ -8,13 +8,13 @@ Gem::Specification.new do |spec|
   spec.version       = HousingSemian::VERSION
   spec.authors       = ["supantha"]
   spec.email         = ["supantha.samanta@gmail.com"]
-  s.files            = Dir["{lib}/**/*"] + ["README.md"]
+  spec.files         = Dir["{lib}/**/*"] + ["README.md"]
   spec.summary       = "Housing Semian"
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
+  spec.description   = "Semian Connector"
   spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
-  spec.add_dependency "rails", ">= 4.0.2"
-  spec.add_dependency 'semian', require: %w(semian semian/net_http)
+  spec.add_dependency "semian"
+  spec.add_dependency "deep_dup"
 
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
