@@ -1,3 +1,3 @@
-module HousingSemian
+module ConfigureSemian
   VERSION = "0.1.0"
 end

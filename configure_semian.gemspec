@@ -1,20 +1,20 @@
 
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "housing_semian/version"
+require "configure_semian/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "housing_semian"
-  spec.version       = HousingSemian::VERSION
+  spec.name          = "configure_semian"
+  spec.version       = ConfigureSemian::VERSION
   spec.authors       = ["supantha"]
   spec.email         = ["supantha.samanta@gmail.com"]
   spec.files         = Dir["{lib}/**/*"] + ["README.md"]
-  spec.summary       = "Housing Semian"
+  spec.summary       = "Configure Semian"
   spec.description   = "Semian Connector"
   spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
+  spec.add_dependency "rails", ">=4.0.2"
   spec.add_dependency "semian"
-  spec.add_dependency "deep_dup"
 
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
