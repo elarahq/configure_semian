@@ -87,7 +87,6 @@ module ConfigureSemian
       yield(@@semian_parameters)
       raise "Service Name not specified for Semian Configuration" if self.service_name.nil?
       @@semian_parameters.generate_specifications
-      byebug
     end
 
     @@semian_parameters.instance_variables.each do |variable|
