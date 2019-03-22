@@ -1,6 +1,5 @@
 require 'net/http'
 require 'byebug'
-require '/home/dev/configure_semian/lib/configure_semian/semian_configuration.rb'
 module Net
   class HTTP
 
