@@ -11,11 +11,11 @@ gem 'configure_semian'
 
 And then execute:
 
-    $ bundle
+  $ bundle
 
 Or install it yourself as:
 
-    $ gem install configure_semian
+  $ gem install configure_semian
 
 ## Usage
 
@@ -26,49 +26,49 @@ Configuring Gem:
 
 Define a module in config/initializers and there define the configurations for the gem as follows:
 
-	ConfigureSemian::SemianConfiguration.configure_client{ |ob|
-		ob.app_server = (true if bulkheading to be enabled by default false otherwise)
-		ob.service_configs = (hash defining the default alongwith various host and path based configurations for the service)
-		ob.free_hosts = (array of hosts to be free from semian)
-		ob.track_exceptions = (array of exception classes to be tracked by semian)
-		ob.service_name = (name of the service using this gem, this name is prepended to the name of the host to which the http call is being made to create semian resource name)
-	}
+  ConfigureSemian::SemianConfiguration.configure_client{ |ob|
+    ob.app_server = (true if bulkheading to be enabled by default false otherwise)
+    ob.service_configs = (hash defining the default alongwith various host and path based configurations for the service)
+    ob.free_hosts = (array of hosts to be free from semian)
+    ob.track_exceptions = (array of exception classes to be tracked by semian)
+    ob.service_name = (name of the service using this gem, this name is prepended to the name of the host to which the http call is being made to create semian resource name)
+  }
 
-Service Configs
-	The complete set of parameters that can be defined in service configs alongwith their default values are
+Service Configs:
+  The complete set of parameters that can be defined in service configs alongwith their default values are
 
-		quota: 0.75,
-        success_threshold: 2,
-        error_threshold: 3,
-        error_timeout: 10,
-        timeout: 10,
-        bulkhead: true if app_server is true, false otherwise
+    quota: 0.75,
+    success_threshold: 2,
+    error_threshold: 3,
+    error_timeout: 10,
+    timeout: 10,
+    bulkhead: true if app_server is true, false otherwise
 
 The service configs hash provided during configuration can edit as many of these parameters as required. For the parameters for which no definition is provided during configuration takes the gem default value as defined above.
-		The structure of the configs hash should be as below:
+    The structure of the configs hash should be as below:
 
-			{
-				default:{gem parameters to be overridden for this whole service provided as parameters-values hash},
-				hostname1: {default: {the resulting service parameters to be overridden for this host provided as parameters-values hash},
-							path1: hash with timeout as key and its value to override its hosts default read timeout value for this path}
-			}
+      {
+        default:{gem parameters to be overridden for this whole service provided as parameters-values hash},
+        hostname1: {default: {the resulting service parameters to be overridden for this host provided as parameters-values hash},
+              path1: hash with timeout as key and its value to override its hosts default read timeout value for this path}
+      }
 Example Definition:
-			 Suppose during configuration service provides app_server as true and service configs as:
+       Suppose during configuration service provides app_server as true and service configs as:
 
-				{
-					default: {quota: 0.5, timeout: 16},
-					'host.example.com': {
-						default: {timeout: 10, bulkhead: false},
-						'/example/index': {timeout: 20}
-					}
-				}
+        {
+          default: {quota: 0.5, timeout: 16},
+          'host.example.com': {
+            default: {timeout: 10, bulkhead: false},
+            '/example/index': {timeout: 20}
+          }
+        }
 
 Then, in this example parameters values in default for the service would be
 
-				{quota: 0.5, success_threshold: 2,error_threshold: 3,error_timeout: 10,timeout: 16, bulkhead: true},
+    {quota: 0.5, success_threshold: 2,error_threshold: 3,error_timeout: 10,timeout: 16, bulkhead: true},
 while for 'host.example.com' would be
 
-				{quota: 0.5, success_threshold: 2,error_threshold: 3,error_timeout: 10,timeout: 10, bulkhead: false}
+    {quota: 0.5, success_threshold: 2,error_threshold: 3,error_timeout: 10,timeout: 10, bulkhead: false}
 and for the path '/example/index', the read timeout will be 20s.
 
 Note: Only read timeout can be configures at path level, all the other parameters are same as that of its host's.
