@@ -26,13 +26,13 @@ Configuring Gem:
 
 Define a module in config/initializers and there define the configurations for the gem as follows:
 
-  ConfigureSemian::SemianConfiguration.configure_client{ |ob|
-    ob.app_server = (true if bulkheading to be enabled by default false otherwise)
-    ob.service_configs = (hash defining the default alongwith various host and path based configurations for the service)
-    ob.free_hosts = (array of hosts to be free from semian)
-    ob.track_exceptions = (array of exception classes to be tracked by semian)
-    ob.service_name = (name of the service using this gem, this name is prepended to the name of the host to which the http call is being made to create semian resource name)
-  }
+    ConfigureSemian::SemianConfiguration.configure_client{ |ob|
+      ob.app_server = (true if bulkheading to be enabled by default false otherwise)
+      ob.service_configs = (hash defining the default alongwith various host and path based configurations for the service)
+      ob.free_hosts = (array of hosts to be free from semian)
+      ob.track_exceptions = (array of exception classes to be tracked by semian)
+      ob.service_name = (name of the service using this gem, this name is prepended to the name of the host to which the http call is being made to create semian resource name)
+    }
 
 Service Configs:
   The complete set of parameters that can be defined in service configs alongwith their default values are
