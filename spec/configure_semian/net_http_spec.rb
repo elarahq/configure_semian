@@ -9,7 +9,7 @@ Rspec.describe do
     before(:each) do 
       ConfigureSemian::SemianConfiguration.configure_client{|ob| 
         ob.app_server = false
-        ob.service_configs = YAML.load('file_path')
+        ob.service_configs = YAML.load_file("test_specs.yml")
         ob.service_name = 'spec_tests'
         ob.free_hosts = ['test.freehost.com']
       }
