@@ -1,5 +1,6 @@
 require 'semian'
 require 'semian/net_http'
+require 'active_support/core_ext/hash/indifferent_access'
 module ConfigureSemian
   class SemianConfiguration
     attr_accessor :host, :port, :path, :data
@@ -21,7 +22,7 @@ module ConfigureSemian
 
       def initialize
         @app_server = false
-        @service_configs = SEMIAN_PARAMETERS
+        @service_configs = SEMIAN_PARAMETERS.with_indifferent_access
         @free_hosts = []
         @track_exceptions = ['Net::ReadTimeout']
         @service_name = nil
@@ -30,11 +31,12 @@ module ConfigureSemian
       # Passed true only for app server so that bulkheading is disabled in worker servers
       def app_server=value
         @app_server = value
-        self.service_configs[:semian_default][:bulkhead] = value
+        self.service_configs[:semian_default][:bulkhead] = (value || false)
       end
 
       # semian options alongwith the ones defined by the service
       def service_configs=value
+        value.with_indifferent_access
         self.service_configs.merge!(value)
       end
 
@@ -49,13 +51,13 @@ module ConfigureSemian
         Semian::NetHTTP.exceptions |= self.track_exceptions
         # Create the complete host,path driven semian options
         semian_default = self.service_configs.delete(:semian_default)
-        service_default = semian_default.merge(self.service_configs.delete(:default) || self.service_configs.delete('default') || {})
+        service_default = semian_default.merge(self.service_configs.delete(:default) || {})
         self.service_configs.each do |host, specs|
-          host_default = service_default.merge(specs.delete(:default) || specs.delete('default') || {})
+          host_default = service_default.merge(specs.delete(:default) || {})
           specs.each do |path, path_specs|
-            self.service_configs[host.intern][path.intern] = host_default.merge(path_specs || {})
+            self.service_configs[host][path] = host_default.merge(path_specs || {})
           end
-          self.service_configs[host.intern][:default] = host_default
+          self.service_configs[host][:default] = host_default
         end
         self.service_configs.merge!({semian_default: semian_default, default: service_default})
       end
@@ -79,7 +81,6 @@ module ConfigureSemian
       parameters.merge!({name: resource_name})
       semian_parameters = parameters.dup
       semian_parameters.delete(:timeout)
-      semian_parameters.delete('timeout')
       semian_parameters
     end
 
