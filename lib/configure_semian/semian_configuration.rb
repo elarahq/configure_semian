@@ -71,6 +71,7 @@ module ConfigureSemian
     ::Semian::NetHTTP.semian_configuration = proc do |host, port|
       if !self.free_hosts.include?(host)
         semian_options = get_semian_parameters(host, port)
+        Rails.logger.info("Semian Options host: #{host}, options: #{semian_options}")
         semian_options
       else
         nil
