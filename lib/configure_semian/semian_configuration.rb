@@ -53,7 +53,7 @@ module ConfigureSemian
         self.service_configs.each do |host, specs|
           host_default = service_default.merge(specs.delete(:default) || specs.delete('default') || {})
           specs.each do |path, path_specs|
-            self.service_configs[host.intern][path.intern] = host_default.merge(path_specs)
+            self.service_configs[host.intern][path.intern] = host_default.merge(path_specs || {})
           end
           self.service_configs[host.intern][:default] = host_default
         end
