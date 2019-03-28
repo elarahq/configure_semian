@@ -11,7 +11,7 @@ module ConfigureSemian
 
       SEMIAN_PARAMETERS = {
                       semian_default: {
-                        quota: 0.75,
+                        tickets: 5,
                         success_threshold: 2,
                         error_threshold: 3,
                         error_timeout: 10,
@@ -69,6 +69,7 @@ module ConfigureSemian
     ::Semian::NetHTTP.semian_configuration = proc do |host, port|
       if !self.free_hosts.include?(host)
         semian_options = get_semian_parameters(host, port)
+        # ConfigureSemian.logger.info("Semian Options host: #{host}, options: #{semian_options}")
         semian_options
       else
         nil
