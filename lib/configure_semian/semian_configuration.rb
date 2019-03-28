@@ -11,7 +11,7 @@ module ConfigureSemian
 
       SEMIAN_PARAMETERS = {
                       semian_default: {
-                        tickets: 5,
+                        tickets: 1,
                         success_threshold: 2,
                         error_threshold: 3,
                         error_timeout: 10,
