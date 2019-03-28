@@ -52,10 +52,10 @@ module ConfigureSemian
         # Create the complete host,path driven semian options
         semian_default = self.service_configs.delete(:semian_default)
         service_default = semian_default.merge(self.service_configs.delete(:default) || {})
-        service_default.delete(:quota) if !service_default[:tickets].nil?
+        # service_default.delete(:quota) if !service_default[:tickets].nil?
         self.service_configs.each do |host, specs|
           host_default = service_default.merge(specs.delete(:default) || {})
-          host_default.delete(:quota) if !host_default[:tickets].nil?
+          # host_default.delete(:quota) if !host_default[:tickets].nil?
           specs.each do |path, path_specs|
             self.service_configs[host][path] = host_default.merge(path_specs || {})
           end
