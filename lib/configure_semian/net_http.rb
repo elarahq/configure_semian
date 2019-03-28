@@ -5,12 +5,11 @@ module Net
     alias_method :old_request, :request
     alias_method :old_post, :post
 
-    # def request(req, body = nil, &block)
-    #   binding.pry
-    #   timeout = get_request_timeout_value(self.address, req.path)
-    #   self.read_timeout = timeout
-    #   old_request(req, body, &block)
-    # end
+    def request(req, body = nil, &block)
+      timeout = get_request_timeout_value(self.address, req.path)
+      self.read_timeout = timeout
+      old_request(req, body, &block)
+    end
 
     def get_request_timeout_value(host, path)
       if !ConfigureSemian::SemianConfiguration.service_configs[host.intern].nil?

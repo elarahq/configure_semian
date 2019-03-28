@@ -11,7 +11,7 @@ module ConfigureSemian
 
       SEMIAN_PARAMETERS = {
                       semian_default: {
-                        tickets: 1,
+                        quota: 0.5,
                         success_threshold: 2,
                         error_threshold: 3,
                         error_timeout: 10,
@@ -24,7 +24,7 @@ module ConfigureSemian
         @app_server = false
         @service_configs = SEMIAN_PARAMETERS.with_indifferent_access
         @free_hosts = []
-        @track_exceptions = ['Net::ReadTimeout']
+        @track_exceptions = []
         @service_name = nil
       end
 
@@ -52,10 +52,10 @@ module ConfigureSemian
         # Create the complete host,path driven semian options
         semian_default = self.service_configs.delete(:semian_default)
         service_default = semian_default.merge(self.service_configs.delete(:default) || {})
-        # service_default.delete(:quota) if !service_default[:tickets].nil?
+        service_default.delete(:quota) if !service_default[:tickets].nil?
         self.service_configs.each do |host, specs|
           host_default = service_default.merge(specs.delete(:default) || {})
-          # host_default.delete(:quota) if !host_default[:tickets].nil?
+          host_default.delete(:quota) if !host_default[:tickets].nil?
           specs.each do |path, path_specs|
             self.service_configs[host][path] = host_default.merge(path_specs || {})
           end
@@ -71,7 +71,6 @@ module ConfigureSemian
     ::Semian::NetHTTP.semian_configuration = proc do |host, port|
       if !self.free_hosts.include?(host)
         semian_options = get_semian_parameters(host, port)
-        # ConfigureSemian.logger.info("Semian Options host: #{host}, options: #{semian_options}")
         semian_options
       else
         nil
