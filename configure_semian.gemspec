@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.files         = Dir["{lib}/**/*"] + ["README.md"]
   spec.summary       = "Configure Semian"
   spec.description   = "Semian Connector"
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage      = "https://github.com/elarahq/configure_semian"
   spec.license       = "MIT"
   spec.add_dependency "rails", ">=4.0.2"
   spec.add_dependency "semian"
