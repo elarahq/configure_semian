@@ -74,6 +74,21 @@ and for the path '/example/index', the read timeout will be 20s.
 Note: Only read timeout can be configures at path level, all the other parameters are same as that of its host's.
 A suggested way to define the service_configs hash would be to define a yml file, and load that file while configuring.
 
+Update 0.1.1:
+  Now added the option to provide different configurations for non-app servers of the service. Following the same structure for the service configs hash, just provide values for the non-app servers under the key :worker. In case values are not defined for non-app servers, gem default values will be used.
+  Updated service_configs hash would be:
+
+    {
+      default: {quota: 0.5, timeout: 16},
+      'host.example.com': {
+        default: {timeout: 10, bulkhead: false},
+          '/example/index': {timeout: 20}
+        },
+      worker: {
+        default: {quota: 0.8, timeout: 20}
+      }
+    }
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
