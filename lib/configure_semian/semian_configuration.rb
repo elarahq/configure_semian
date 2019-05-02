@@ -91,7 +91,7 @@ module ConfigureSemian
       parameters = self.service_configs[host.intern].nil? ? self.service_configs[:default] : self.service_configs[host.intern][:default]
       parameters.merge!({name: resource_name})
       semian_parameters = parameters.dup
-      semian_parameters.delete!(:timeout)
+      semian_parameters.delete(:timeout)
       semian_parameters
     end
 
