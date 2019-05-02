@@ -85,7 +85,11 @@ Update 0.1.2:
           '/example/index': {timeout: 20}
         },
       worker: {
-        default: {quota: 0.8, timeout: 20}
+        default: {quota: 0.8, timeout: 20},
+        'host.example.com': {
+          default: {timeout: 10, bulkhead: false},
+          '/example/index': {timeout: 25}
+        }
       }
     }
 
