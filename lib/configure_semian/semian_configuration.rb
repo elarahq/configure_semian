@@ -67,7 +67,7 @@ module ConfigureSemian
       # Overriding specifications for nonapp server
       def choose_configs_for_given_server
         if self.app_server
-          self.service_configs.delete!(:worker)
+          self.service_configs.delete(:worker)
         else
           self.service_configs = self.service_configs[:worker] || {}
         end
