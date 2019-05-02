@@ -31,7 +31,6 @@ module ConfigureSemian
       # Passed true only for app server so that bulkheading is disabled in worker servers
       def app_server=value
         @app_server = value
-        self.service_configs[:semian_default][:bulkhead] = (value || false)
       end
 
       # semian options alongwith the ones defined by the service
@@ -50,6 +49,7 @@ module ConfigureSemian
         Semian::NetHTTP.exceptions |= self.track_exceptions
         # Create the complete host,path driven semian options
         semian_default = SEMIAN_PARAMETERS[:semian_default].with_indifferent_access
+        semian_default[:bulkhead] = self.app_server || false
         choose_configs_for_given_server
         service_default = semian_default.merge(self.service_configs.delete(:default) || {})
         service_default.delete(:quota) if !service_default[:tickets].nil?
