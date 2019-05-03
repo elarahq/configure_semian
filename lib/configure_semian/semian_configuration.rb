@@ -22,7 +22,7 @@ module ConfigureSemian
 
       def initialize
         @app_server = false
-        @service_configs = SEMIAN_PARAMETERS.with_indifferent_access
+        @service_configs = {}
         @free_hosts = []
         @track_exceptions = []
         @service_name = nil
@@ -31,13 +31,11 @@ module ConfigureSemian
       # Passed true only for app server so that bulkheading is disabled in worker servers
       def app_server=value
         @app_server = value
-        self.service_configs[:semian_default][:bulkhead] = (value || false)
       end
 
       # semian options alongwith the ones defined by the service
       def service_configs=value
-        value.with_indifferent_access
-        self.service_configs.merge!(value)
+        @service_configs = value.with_indifferent_access
       end
 
       # exceptions to be tracked defined by the service 
@@ -50,7 +48,9 @@ module ConfigureSemian
         # Define exceptions to be tracked by Semian
         Semian::NetHTTP.exceptions |= self.track_exceptions
         # Create the complete host,path driven semian options
-        semian_default = self.service_configs.delete(:semian_default)
+        semian_default = SEMIAN_PARAMETERS[:semian_default].with_indifferent_access
+        semian_default[:bulkhead] = self.app_server || false
+        choose_configs_for_given_server
         service_default = semian_default.merge(self.service_configs.delete(:default) || {})
         service_default.delete(:quota) if !service_default[:tickets].nil?
         self.service_configs.each do |host, specs|
@@ -62,6 +62,15 @@ module ConfigureSemian
           self.service_configs[host][:default] = host_default
         end
         self.service_configs.merge!({semian_default: semian_default, default: service_default})
+      end
+
+      # Overriding specifications for nonapp server
+      def choose_configs_for_given_server
+        if self.app_server
+          self.service_configs.delete(:worker)
+        else
+          self.service_configs = self.service_configs[:worker] || {}
+        end
       end
 
     end
