@@ -25,7 +25,8 @@ module Net
 
     private
     def process_request_path(path)
-      path.split('?').first
+      path = path.split('?').first
+      path.gsub('//',"\/")
     end
   end
 

@@ -5,6 +5,8 @@ test.givenhost.com:
     timeout: 8
   /givenpath:
     timeout: 11
+  /nested/testpath:
+    timeout: 10
   /given-path-without-params:
     timeout: 15
   /given-path-with-params:

@@ -85,6 +85,19 @@ RSpec.describe do
       end
     end
 
+    it 'should return same timeout with double slash url as with single slash url' do
+      uri = URI('http://test.givenhost.com/nested/testpath')
+      net_http = Net::HTTP.new(uri.host, uri.port)
+      single_slash_read_timeout = net_http.get_request_timeout_value(uri.host, uri.path)
+
+      uri = URI('http://test.givenhost.com//nested//testpath')
+      net_http = Net::HTTP.new(uri.host, uri.port)
+      double_slash_read_timeout = net_http.get_request_timeout_value(uri.host, uri.path)
+
+      expect(single_slash_read_timeout).to eql(10)
+      expect(single_slash_read_timeout).to eql(double_slash_read_timeout)
+    end
+
   end
 end
 
