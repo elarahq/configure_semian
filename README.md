@@ -93,6 +93,11 @@ Update 0.1.2:
       }
     }
 
+## VERSION (0.1.3)
+- Supports request urls with or without parameters
+- Supports request with mulitple double slash in URI path
+- Supports request without forward slash if timeout defined with forward slash
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
