@@ -7,10 +7,12 @@ test.givenhost.com:
     timeout: 11
   /nested/testpath:
     timeout: 10
-  /given-path-without-params:
+  /givenpath-without-params:
     timeout: 15
-  /given-path-with-params:
+  /givenpath-with-params:
     timeout: 20
+  givenpath-without-slash:
+    timeout: 5
 test.freehost.com:
   default:
     timeout: 16

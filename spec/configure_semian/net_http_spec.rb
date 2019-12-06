@@ -48,17 +48,17 @@ RSpec.describe do
 
     context 'read timeout for service specifics with request params' do
 
-      let!(:path) {'given-path-with-params?a=b'}
+      let!(:path) {'givenpath-with-params?a=b'}
 
       it 'should return correct read timeout for given host with forward /' do
-        uri = URI('http://test.givenhost.com/given-path-with-params?a=b')
+        uri = URI('http://test.givenhost.com/givenpath-with-params?a=b')
         net_http = Net::HTTP.new(uri.host, uri.port)
         read_timeout = net_http.get_request_timeout_value(uri.host, uri.request_uri)
         expect(read_timeout).to eql(20)
       end
 
       it 'should return correct read timeout for given host without forward /' do
-        uri = URI('http://test.givenhost.com/given-path-with-params?a=b')
+        uri = URI('http://test.givenhost.com/givenpath-with-params?a=b')
         net_http = Net::HTTP.new(uri.host, uri.port)
         read_timeout = net_http.get_request_timeout_value(uri.host, path)
         expect(read_timeout).to eql(20)
@@ -68,17 +68,17 @@ RSpec.describe do
 
     context 'read timeout for service specifics without request params' do
 
-      let!(:path) {'given-path-without-params'}
+      let!(:path) {'givenpath-without-params'}
 
       it 'should return correct read timeout for given host with forward /' do
-        uri = URI('http://test.givenhost.com/given-path-without-params')
+        uri = URI('http://test.givenhost.com/givenpath-without-params')
         net_http = Net::HTTP.new(uri.host, uri.port)
         read_timeout = net_http.get_request_timeout_value(uri.host, uri.request_uri)
         expect(read_timeout).to eql(15)
       end
 
       it 'should return correct read timeout for given host without forward /' do
-        uri = URI('http://test.givenhost.com/given-path-without-params')
+        uri = URI('http://test.givenhost.com/givenpath-without-params')
         net_http = Net::HTTP.new(uri.host, uri.port)
         read_timeout = net_http.get_request_timeout_value(uri.host, path)
         expect(read_timeout).to eql(15)
@@ -96,6 +96,13 @@ RSpec.describe do
 
       expect(single_slash_read_timeout).to eql(10)
       expect(single_slash_read_timeout).to eql(double_slash_read_timeout)
+    end
+
+    it 'should return same timeout with forward / path as without /' do
+      uri = URI('http://test.givenhost.com/givenpath-without-slash')
+      net_http = Net::HTTP.new(uri.host, uri.port)
+      read_timeout = net_http.get_request_timeout_value(uri.host, uri.path)
+      expect(read_timeout).to eql(5)
     end
 
   end
