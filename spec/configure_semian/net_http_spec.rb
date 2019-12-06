@@ -5,16 +5,16 @@ require 'yaml'
 RSpec.describe do
   describe 'check net http patch functionality for the gem' do
 
-    context 'read timeout for service specifics' do
+    before(:each) do
+      ConfigureSemian::SemianConfiguration.configure_client{|ob|
+        ob.app_server = true
+        ob.service_configs = YAML.load_file(File.join(File.dirname(File.expand_path(__FILE__)),'test_specs.yml'))
+        ob.service_name = 'spec_tests'
+        ob.free_hosts = ['test.freehost.com']
+      }
+    end
 
-      before(:all) do
-        ConfigureSemian::SemianConfiguration.configure_client{|ob|
-          ob.app_server = false
-          ob.service_configs = YAML.load_file(File.join(File.dirname(File.expand_path(__FILE__)),'test_specs.yml'))
-          ob.service_name = 'spec_tests'
-          ob.free_hosts = ['test.freehost.com']
-        }
-      end
+    context 'read timeout for service specifics' do
 
       it 'should return correct read timeout for service default' do
         uri = URI('http://test.randomhost.com/testpath')
@@ -43,7 +43,48 @@ RSpec.describe do
         read_timeout = net_http.get_request_timeout_value(uri.host, uri.path)
         expect(read_timeout).to eql(16)
       end
+
     end
+
+    context 'read timeout for service specifics with request params' do
+
+      let!(:path) {'given-path-with-params?a=b'}
+
+      it 'should return correct read timeout for given host with forward /' do
+        uri = URI('http://test.givenhost.com/given-path-with-params?a=b')
+        net_http = Net::HTTP.new(uri.host, uri.port)
+        read_timeout = net_http.get_request_timeout_value(uri.host, uri.request_uri)
+        expect(read_timeout).to eql(20)
+      end
+
+      it 'should return correct read timeout for given host without forward /' do
+        uri = URI('http://test.givenhost.com/given-path-with-params?a=b')
+        net_http = Net::HTTP.new(uri.host, uri.port)
+        read_timeout = net_http.get_request_timeout_value(uri.host, path)
+        expect(read_timeout).to eql(20)
+      end
+
+    end
+
+    context 'read timeout for service specifics without request params' do
+
+      let!(:path) {'given-path-without-params'}
+
+      it 'should return correct read timeout for given host with forward /' do
+        uri = URI('http://test.givenhost.com/given-path-without-params')
+        net_http = Net::HTTP.new(uri.host, uri.port)
+        read_timeout = net_http.get_request_timeout_value(uri.host, uri.request_uri)
+        expect(read_timeout).to eql(15)
+      end
+
+      it 'should return correct read timeout for given host without forward /' do
+        uri = URI('http://test.givenhost.com/given-path-without-params')
+        net_http = Net::HTTP.new(uri.host, uri.port)
+        read_timeout = net_http.get_request_timeout_value(uri.host, path)
+        expect(read_timeout).to eql(15)
+      end
+    end
+
   end
 end
 

@@ -5,6 +5,10 @@ test.givenhost.com:
     timeout: 8
   /givenpath:
     timeout: 11
+  /given-path-without-params:
+    timeout: 15
+  /given-path-with-params:
+    timeout: 20
 test.freehost.com:
   default:
     timeout: 16

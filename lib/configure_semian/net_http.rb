@@ -12,13 +12,20 @@ module Net
     end
 
     def get_request_timeout_value(host, path)
+      path = process_request_path(path)
       if !ConfigureSemian::SemianConfiguration.service_configs[host.intern].nil?
         specs = ConfigureSemian::SemianConfiguration.service_configs[host.intern][path.intern]
+        specs ||= ConfigureSemian::SemianConfiguration.service_configs[host.intern]["/#{path}".intern]
         specs ||= ConfigureSemian::SemianConfiguration.service_configs[host.intern][:default]
       end
       specs ||= ConfigureSemian::SemianConfiguration.service_configs[:default]
       timeout = specs[:timeout] || specs['timeout']
       return timeout
+    end
+
+    private
+    def process_request_path(path)
+      path.split('?').first
     end
   end
 
