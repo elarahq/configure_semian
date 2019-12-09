@@ -16,7 +16,7 @@ module Net
       if !ConfigureSemian::SemianConfiguration.service_configs[host.intern].nil?
         specs = ConfigureSemian::SemianConfiguration.service_configs[host.intern][path.intern]
         specs ||= ConfigureSemian::SemianConfiguration.service_configs[host.intern]["/#{path}".intern]
-        specs ||= ConfigureSemian::SemianConfiguration.service_configs[host.intern][path[1..-1].intern]
+        specs ||= ConfigureSemian::SemianConfiguration.service_configs[host.intern][path.sub('/','').intern]
         specs ||= ConfigureSemian::SemianConfiguration.service_configs[host.intern][:default]
       end
       specs ||= ConfigureSemian::SemianConfiguration.service_configs[:default]
@@ -27,7 +27,7 @@ module Net
     private
     def process_request_path(path)
       path = path.split('?').first
-      path.gsub('//',"\/")
+      path.gsub(/[\/]+/,'/')
     end
   end
 
