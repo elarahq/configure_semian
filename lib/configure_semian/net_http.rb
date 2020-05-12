@@ -8,6 +8,7 @@ module Net
     def request(req, body = nil, &block)
       timeout = get_request_timeout_value(self.address, req.path)
       self.read_timeout = timeout
+      self.open_timeout = 3
       old_request(req, body, &block)
     end
 
