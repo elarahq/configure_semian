@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.description   = "Semian Connector"
   spec.homepage      = "https://github.com/elarahq/configure_semian"
   spec.license       = "MIT"
-  spec.add_dependency "rails", "~>4.0.2"
+  spec.add_dependency "rails", ">= 4.0.2", "<= 5.2.0"
   spec.add_dependency "semian"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
